@@ -11,6 +11,7 @@
 
 #include "shapes/quad.h"
 #include "shapes/sphere.h"
+#include "shapes/ray_marched_sphere.h"
 
 // =============================================================================
 // -- End of shape includes ----------------------------------------------------
@@ -56,6 +57,12 @@ bool Raytracer::parseObjectNode(json const &node)
         Point v2(node["v2"]);
         Point v3(node["v3"]);
         obj = ObjectPtr(new Quad(v0, v1, v2, v3));
+    }
+    else if (node["type"] == "ray_marched_sphere")
+    {
+        Point pos(node["position"]);
+        double radius = node["radius"];
+        obj = ObjectPtr(new RayMarchedSphere(pos, radius));
     }
     else
     {
