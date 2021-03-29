@@ -1,15 +1,14 @@
 #ifndef RAY_MARCHED_SPHERE_H_
 #define RAY_MARCHED_SPHERE_H_
 
-#include "../object.h"
+#include "../ray_marched_object.h"
 
-class RayMarchedSphere: public Object
+class RayMarchedSphere: public RayMarchedObject
 {
     public:
         RayMarchedSphere(Point const &center, double radius);
 
-        Hit intersect(Ray const &ray) override;
-        double distanceEstimator(Point const &position);
+        double distanceEstimator(Point const &position) override;
 
         Point const center;
         double const radius;

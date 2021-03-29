@@ -12,6 +12,8 @@
 #include "shapes/quad.h"
 #include "shapes/sphere.h"
 #include "shapes/ray_marched_sphere.h"
+#include "shapes/sierpinski_tetrahedron.h"
+#include "shapes/torus.h"
 
 // =============================================================================
 // -- End of shape includes ----------------------------------------------------
@@ -63,6 +65,20 @@ bool Raytracer::parseObjectNode(json const &node)
         Point pos(node["position"]);
         double radius = node["radius"];
         obj = ObjectPtr(new RayMarchedSphere(pos, radius));
+    }
+    else if (node["type"] == "sierpinski_tetrahedron")
+    {
+        Point pos(node["position"]);
+        double size = node["size"];
+        size_t iterations = node["iterations"];
+        obj = ObjectPtr(new SierpinskiTetrahedron(pos, size, iterations));
+    }
+    else if (node["type"] == "torus")
+    {
+        Point pos(node["position"]);
+        double height = node["height"];
+        double width = node["width"];
+        obj = ObjectPtr(new Torus(pos, height, width));
     }
     else
     {

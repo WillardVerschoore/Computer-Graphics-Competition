@@ -1,0 +1,26 @@
+{
+    "Eye": [200, 400, 1000],
+    "Shadows": true,
+    "Lights": [
+        {
+            "position": [-200, 600, 1500],
+            "color": [0.8, 0.8, 0.8]
+        }
+    ],
+    "Objects": [
+        {
+            "type": "sierpinski_tetrahedron",
+            "position": [200, 250, 300],
+            "size": 100,
+            "iterations": 12,
+            "material":
+            {
+                "color": [1.0, 1.0, 1.0],
+                "ka": 0.5,
+                "kd": 0.7,
+                "ks": 0.3,
+                "n": 64
+            }
+        }
+    ]
+}
