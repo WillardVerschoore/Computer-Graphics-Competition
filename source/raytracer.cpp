@@ -13,6 +13,7 @@
 #include "shapes/sphere.h"
 #include "shapes/ray_marched_sphere.h"
 #include "shapes/sierpinski_tetrahedron.h"
+#include "shapes/menger_sponge.h"
 #include "shapes/torus.h"
 #include "shapes/octahedron.h"
 
@@ -79,6 +80,16 @@ bool Raytracer::parseObjectNode(json const &node)
 
         dynamic_cast<SierpinskiTetrahedron*>(obj.get())->maxSteps = (node["maxSteps"]);
         dynamic_cast<SierpinskiTetrahedron*>(obj.get())->distanceThreshold = (node["distanceThreshold"]);
+    }
+    else if (node["type"] == "menger_sponge")
+    {
+        Point pos(node["position"]);
+        double size = node["size"];
+        size_t iterations = node["iterations"];
+        obj = ObjectPtr(new MengerSponge(pos, size, iterations));
+
+        dynamic_cast<MengerSponge*>(obj.get())->maxSteps = (node["maxSteps"]);
+        dynamic_cast<MengerSponge*>(obj.get())->distanceThreshold = (node["distanceThreshold"]);
     }
     else if (node["type"] == "torus")
     {
