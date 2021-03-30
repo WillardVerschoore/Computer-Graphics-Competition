@@ -9,9 +9,9 @@
     ],
     "Objects": [
         {
-            "type": "ray_marched_sphere",
+            "type": "octahedron",
             "position": [150, 250, 300],
-            "radius": 80,
+            "size": 80,
             "maxSteps": 128,
             "distanceThreshold": 1E-3,
             "material":

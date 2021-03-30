@@ -13,6 +13,8 @@
             "position": [200, 250, 300],
             "height": 40,
             "width": 80,
+            "maxSteps": 128,
+            "distanceThreshold": 1E-3,
             "material":
             {
                 "color": [0.0, 1.0, 0.0],

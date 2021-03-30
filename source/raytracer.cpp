@@ -14,6 +14,7 @@
 #include "shapes/ray_marched_sphere.h"
 #include "shapes/sierpinski_tetrahedron.h"
 #include "shapes/torus.h"
+#include "shapes/octahedron.h"
 
 // =============================================================================
 // -- End of shape includes ----------------------------------------------------
@@ -65,6 +66,9 @@ bool Raytracer::parseObjectNode(json const &node)
         Point pos(node["position"]);
         double radius = node["radius"];
         obj = ObjectPtr(new RayMarchedSphere(pos, radius));
+        
+        dynamic_cast<RayMarchedSphere*>(obj.get())->maxSteps = (node["maxSteps"]);
+        dynamic_cast<RayMarchedSphere*>(obj.get())->distanceThreshold = (node["distanceThreshold"]);
     }
     else if (node["type"] == "sierpinski_tetrahedron")
     {
@@ -72,6 +76,9 @@ bool Raytracer::parseObjectNode(json const &node)
         double size = node["size"];
         size_t iterations = node["iterations"];
         obj = ObjectPtr(new SierpinskiTetrahedron(pos, size, iterations));
+
+        dynamic_cast<SierpinskiTetrahedron*>(obj.get())->maxSteps = (node["maxSteps"]);
+        dynamic_cast<SierpinskiTetrahedron*>(obj.get())->distanceThreshold = (node["distanceThreshold"]);
     }
     else if (node["type"] == "torus")
     {
@@ -79,6 +86,19 @@ bool Raytracer::parseObjectNode(json const &node)
         double height = node["height"];
         double width = node["width"];
         obj = ObjectPtr(new Torus(pos, height, width));
+
+        
+        dynamic_cast<Torus*>(obj.get())->maxSteps = (node["maxSteps"]);
+        dynamic_cast<Torus*>(obj.get())->distanceThreshold = (node["distanceThreshold"]);
+    }
+    else if (node["type"] == "octahedron")
+    {
+        Point pos(node["position"]);
+        double size = node["size"];
+        obj = ObjectPtr(new Octahedron(pos, size));
+        
+        dynamic_cast<Octahedron*>(obj.get())->maxSteps = (node["maxSteps"]);
+        dynamic_cast<Octahedron*>(obj.get())->distanceThreshold = (node["distanceThreshold"]);
     }
     else
     {

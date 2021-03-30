@@ -26,9 +26,9 @@ Hit RayMarchedObject::intersect(Ray const &ray)
 Vector RayMarchedObject::calculateNormal(Point const &hit)
 {
     // Small offsets along the coordinate axes. TODO: Use distanceThreshold or new variable for offset size.
-    Point xOffset(1E-3, 0.0, 0.0);
-    Point yOffset(0.0, 1E-3, 0.0);
-    Point zOffset(0.0, 0.0, 1E-3);
+    Point xOffset(distanceThreshold, 0.0, 0.0);
+    Point yOffset(0.0, distanceThreshold, 0.0);
+    Point zOffset(0.0, 0.0, distanceThreshold);
 
     // Calculate the gradient of the distance estimator along these offsets.
     double xGradient = distanceEstimator(hit + xOffset) - distanceEstimator(hit - xOffset);
