@@ -25,6 +25,7 @@
 // -- Include all your operations here ---------------------------------------------
 // =============================================================================
 
+#include "operations/rotate.h"
 #include "operations/scale.h"
 #include "operations/translate.h"
 
@@ -173,6 +174,11 @@ void Raytracer::parseRayMarchedObjectNode(nlohmann::json const &node, RayMarched
 
 Operation *Raytracer::parseOperationNode(nlohmann::json const &node) const
 {
+     if (node["type"] == "rotate")
+    {
+        Vector rotation(node["rotation"]);
+        return new Rotate(rotation);
+    }
     if (node["type"] == "scale")
     {
         double scale = node["scale"];
@@ -180,7 +186,7 @@ Operation *Raytracer::parseOperationNode(nlohmann::json const &node) const
     }
     else if (node["type"] == "translate")
     {
-        Point translation(node["translation"]);
+        Vector translation(node["translation"]);
         return new Translate(translation);
     }
 
