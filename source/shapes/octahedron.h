@@ -6,12 +6,7 @@
 class Octahedron : public RayMarchedObject
 {
 public:
-    Octahedron(Point const &position, double size);
-
     double distanceEstimator(Point const &position) override;
-
-    Point const position;
-    double const size;
 };
 
 #endif

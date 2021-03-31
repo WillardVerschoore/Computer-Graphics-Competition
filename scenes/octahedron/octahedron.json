@@ -10,10 +10,18 @@
     "Objects": [
         {
             "type": "octahedron",
-            "position": [150, 250, 300],
-            "size": 80,
             "maxSteps": 128,
             "distanceThreshold": 1E-3,
+            "Operations": [
+                {
+                    "type": "translate",
+                    "translation": [150, 250, 300]
+                },
+                {
+                    "type": "scale",
+                    "scale": 80
+                }
+            ],
             "material":
             {
                 "color": [0.0, 1.0, 0.0],

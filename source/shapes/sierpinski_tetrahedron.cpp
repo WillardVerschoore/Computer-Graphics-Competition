@@ -5,21 +5,19 @@
 
 using namespace std;
 
-SierpinskiTetrahedron::SierpinskiTetrahedron(Point const &center, double size, size_t iterations)
+SierpinskiTetrahedron::SierpinskiTetrahedron(size_t iterations)
 :
-    center(center),
-    size(size),
     iterations(iterations)
 {}
 
 double SierpinskiTetrahedron::distanceEstimator(Point const &position)
 {
-    Point adjusted = position - center;
+    Point adjusted(position);
 
-    Point vertex1( size,  size,  size);
-    Point vertex2(-size, -size,  size);
-    Point vertex3( size, -size, -size);
-    Point vertex4(-size,  size, -size);
+    Point vertex1( 1.0,  1.0,  1.0);
+    Point vertex2(-1.0, -1.0,  1.0);
+    Point vertex3( 1.0, -1.0, -1.0);
+    Point vertex4(-1.0,  1.0, -1.0);
 
     Point closest;
     double distance, closestDistance;

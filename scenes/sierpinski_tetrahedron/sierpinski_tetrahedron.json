@@ -10,11 +10,19 @@
     "Objects": [
         {
             "type": "sierpinski_tetrahedron",
-            "position": [200, 250, 300],
-            "size": 100,
             "iterations": 12,
             "maxSteps": 64,
             "distanceThreshold": 1E-1,
+            "Operations": [
+                {
+                    "type": "translate",
+                    "translation": [200, 250, 300]
+                },
+                {
+                    "type": "scale",
+                    "scale": 100
+                }
+            ],
             "material":
             {
                 "color": [1.0, 1.0, 1.0],

@@ -5,10 +5,8 @@
 
 using namespace std;
 
-MengerSponge::MengerSponge(Point const &position, double size, size_t iterations)
+MengerSponge::MengerSponge(size_t iterations)
 :
-    position(position),
-    size(size),
     iterations(iterations)
 {}
 
@@ -19,7 +17,7 @@ double MengerSponge::distanceEstimator(Point const &position)
         return x - y * floor(x / y);
     };
 
-    Point adjusted = (position - this->position) / size;
+    Point adjusted(position);
 
     double d = box(adjusted, Point{1.0, 1.0, 1.0});
 
@@ -42,7 +40,7 @@ double MengerSponge::distanceEstimator(Point const &position)
         d = max(d, c);
     }
     
-    return d * size;
+    return d;
 }
 
 double MengerSponge::box(Point const &position, Point const &b)

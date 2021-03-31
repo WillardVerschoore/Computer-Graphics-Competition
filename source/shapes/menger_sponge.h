@@ -6,12 +6,10 @@
 class MengerSponge : public RayMarchedObject
 {
 public:
-    MengerSponge(Point const &position, double size, size_t iterations);
+    MengerSponge(size_t iterations);
 
     double distanceEstimator(Point const &position) override;
 
-    Point const position;
-    double const size;
     size_t const iterations;
 
 private:

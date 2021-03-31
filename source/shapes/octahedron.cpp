@@ -5,15 +5,9 @@
 
 using namespace std;
 
-Octahedron::Octahedron(Point const &position, double size)
-:
-    position(position),
-    size(size)
-{}
-
 double Octahedron::distanceEstimator(Point const &position)
 {
-    Point adjusted = (position - this->position) / size;
+    Point adjusted(position);
     adjusted.x = abs(adjusted.x);
     adjusted.y = abs(adjusted.y);
     adjusted.z = abs(adjusted.z);
@@ -39,9 +33,9 @@ double Octahedron::distanceEstimator(Point const &position)
     }
     else
     {
-        return m * 0.57735027 * size;
+        return m * 0.57735027;
     }
 
     double k = clamp(0.5 * (q.z - q.y + 1.0), 0.0 , 1.0);
-    return Point{q.x, q.y - 1.0 + k, q.z - k}.length() * size;
+    return Point{q.x, q.y - 1.0 + k, q.z - k}.length();
 }

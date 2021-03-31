@@ -21,6 +21,17 @@
 // -- End of shape includes ----------------------------------------------------
 // =============================================================================
 
+// =============================================================================
+// -- Include all your operations here ---------------------------------------------
+// =============================================================================
+
+#include "operations/scale.h"
+#include "operations/translate.h"
+
+// =============================================================================
+// -- End of operation includes ----------------------------------------------------
+// =============================================================================
+
 #include "json/json.h"
 
 #include <exception>
@@ -64,52 +75,37 @@ bool Raytracer::parseObjectNode(json const &node)
     }
     else if (node["type"] == "ray_marched_sphere")
     {
-        Point pos(node["position"]);
-        double radius = node["radius"];
-        obj = ObjectPtr(new RayMarchedSphere(pos, radius));
-        
-        dynamic_cast<RayMarchedSphere*>(obj.get())->maxSteps = (node["maxSteps"]);
-        dynamic_cast<RayMarchedSphere*>(obj.get())->distanceThreshold = (node["distanceThreshold"]);
+        obj = ObjectPtr(new RayMarchedSphere());
+        RayMarchedObject *rayMarchedObj = dynamic_cast<RayMarchedObject*>(obj.get());
+        parseRayMarchedObjectNode(node, rayMarchedObj);
     }
     else if (node["type"] == "sierpinski_tetrahedron")
     {
-        Point pos(node["position"]);
-        double size = node["size"];
         size_t iterations = node["iterations"];
-        obj = ObjectPtr(new SierpinskiTetrahedron(pos, size, iterations));
-
-        dynamic_cast<SierpinskiTetrahedron*>(obj.get())->maxSteps = (node["maxSteps"]);
-        dynamic_cast<SierpinskiTetrahedron*>(obj.get())->distanceThreshold = (node["distanceThreshold"]);
+        obj = ObjectPtr(new SierpinskiTetrahedron(iterations));
+        RayMarchedObject *rayMarchedObj = dynamic_cast<RayMarchedObject*>(obj.get());
+        parseRayMarchedObjectNode(node, rayMarchedObj);
     }
     else if (node["type"] == "menger_sponge")
     {
-        Point pos(node["position"]);
-        double size = node["size"];
         size_t iterations = node["iterations"];
-        obj = ObjectPtr(new MengerSponge(pos, size, iterations));
-
-        dynamic_cast<MengerSponge*>(obj.get())->maxSteps = (node["maxSteps"]);
-        dynamic_cast<MengerSponge*>(obj.get())->distanceThreshold = (node["distanceThreshold"]);
+        obj = ObjectPtr(new MengerSponge(iterations));
+        RayMarchedObject *rayMarchedObj = dynamic_cast<RayMarchedObject*>(obj.get());
+        parseRayMarchedObjectNode(node, rayMarchedObj);
     }
     else if (node["type"] == "torus")
     {
-        Point pos(node["position"]);
         double height = node["height"];
         double width = node["width"];
-        obj = ObjectPtr(new Torus(pos, height, width));
-
-        
-        dynamic_cast<Torus*>(obj.get())->maxSteps = (node["maxSteps"]);
-        dynamic_cast<Torus*>(obj.get())->distanceThreshold = (node["distanceThreshold"]);
+        obj = ObjectPtr(new Torus( height, width));
+        RayMarchedObject *rayMarchedObj = dynamic_cast<RayMarchedObject*>(obj.get());
+        parseRayMarchedObjectNode(node, rayMarchedObj);
     }
     else if (node["type"] == "octahedron")
     {
-        Point pos(node["position"]);
-        double size = node["size"];
-        obj = ObjectPtr(new Octahedron(pos, size));
-        
-        dynamic_cast<Octahedron*>(obj.get())->maxSteps = (node["maxSteps"]);
-        dynamic_cast<Octahedron*>(obj.get())->distanceThreshold = (node["distanceThreshold"]);
+        obj = ObjectPtr(new Octahedron());
+        RayMarchedObject *rayMarchedObj = dynamic_cast<RayMarchedObject*>(obj.get());
+        parseRayMarchedObjectNode(node, rayMarchedObj);
     }
     else
     {
@@ -165,6 +161,31 @@ Material Raytracer::parseMaterialNode(json const &node) const
 
     // No color or texture specified
     return Material(Color(1, 0, 1), ka, kd, ks, n);
+}
+
+void Raytracer::parseRayMarchedObjectNode(nlohmann::json const &node, RayMarchedObject *obj) const
+{
+    obj->maxSteps = (node["maxSteps"]);
+    obj->distanceThreshold = (node["distanceThreshold"]);
+    for (auto const &operationNode : node["Operations"])
+        obj->operations.push_back(parseOperationNode(operationNode));
+}
+
+Operation *Raytracer::parseOperationNode(nlohmann::json const &node) const
+{
+    if (node["type"] == "scale")
+    {
+        double scale = node["scale"];
+        return new Scale(scale);
+    }
+    else if (node["type"] == "translate")
+    {
+        Point translation(node["translation"]);
+        return new Translate(translation);
+    }
+
+    // No operation specified, return identity operation.
+    return new Operation();
 }
 
 bool Raytracer::readScene(string const &ifname)

@@ -10,11 +10,20 @@
     "Objects": [
         {
             "type": "torus",
-            "position": [200, 250, 300],
-            "height": 40,
-            "width": 80,
+            "height": 1,
+            "width": 2,
             "maxSteps": 128,
             "distanceThreshold": 1E-3,
+            "Operations": [
+                {
+                    "type": "translate",
+                    "translation": [200, 250, 300]
+                },
+                {
+                    "type": "scale",
+                    "scale": 40
+                }
+            ],
             "material":
             {
                 "color": [0.0, 1.0, 0.0],

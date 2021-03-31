@@ -10,11 +10,19 @@
     "Objects": [
         {
             "type": "menger_sponge",
-            "position": [200, 250, 300],
-            "size": 75,
             "iterations": 4,
             "maxSteps": 128,
             "distanceThreshold": 1E-3,
+            "Operations": [
+                {
+                    "type": "translate",
+                    "translation": [200, 250, 300]
+                },
+                {
+                    "type": "scale",
+                    "scale": 75
+                }
+            ],
             "material":
             {
                 "color": [0.3, 0.6, 1.0],

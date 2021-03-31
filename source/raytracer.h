@@ -2,6 +2,8 @@
 #define RAYTRACER_H_
 
 #include "scene.h"
+#include "ray_marched_object.h"
+#include "operations/operation.h"
 
 #include <string>
 
@@ -26,6 +28,8 @@ class Raytracer
 
         Light parseLightNode(nlohmann::json const &node) const;
         Material parseMaterialNode(nlohmann::json const &node) const;
+        void parseRayMarchedObjectNode(nlohmann::json const &node, RayMarchedObject *obj) const;
+        Operation *parseOperationNode(nlohmann::json const &node) const;
 };
 
 #endif
