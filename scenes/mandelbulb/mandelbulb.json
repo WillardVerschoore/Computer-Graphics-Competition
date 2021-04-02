@@ -1,31 +1,24 @@
 {
-    "Eye": [200, 400, 1000],
+    "Width": 2048,
+    "Height": 2048,
+    "Eye": [0, 0, 3],
+    "FieldOfView": 60,
     "Shadows": false,
     "Lights": [
         {
-            "position": [-200, 600, 1500],
+            "position": [-10, 10, 10],
             "color": [0.8, 0.8, 0.8]
         }
     ],
     "Objects": [
         {
             "type": "mandelbulb",
-            "iterations": 16,
-            "maxSteps": 256,
-            "distanceThreshold": 1E-3,
-            "Operations": [
-                {
-                    "type": "translate",
-                    "translation": [200, 275, 300]
-                },
-                {
-                    "type": "scale",
-                    "scale": 100
-                }
-            ],
+            "iterations": 4,
+            "maxSteps": 128,
+            "distanceThreshold": 0.0015,
             "material":
             {
-                "color": [1.0, 0.4, 0.2],
+                "color": [1.0, 1.0, 1.0],
                 "ka": 0.2,
                 "kd": 0.8,
                 "ks": 0.5,

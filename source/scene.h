@@ -17,6 +17,8 @@ class Scene
     std::vector<ObjectPtr> objects;
     std::vector<LightPtr> lights;
     Point eye;
+    Vector rotation;
+    double fieldOfView;
     bool renderShadows;
     unsigned recursionDepth;
     unsigned supersamplingFactor;
@@ -39,10 +41,11 @@ class Scene
         // render the scene to the given image
         void render(Image &img);
 
-
         void addObject(ObjectPtr obj);
         void addLight(Light const &light);
         void setEye(Triple const &position);
+        void setRotation(Triple const &rotation);
+        void setFieldOfView(double fieldOfView);
         void setRenderShadows(bool renderShadows);
         void setRecursionDepth(unsigned depth);
         void setSuperSample(unsigned factor);

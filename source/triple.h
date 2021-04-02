@@ -71,9 +71,13 @@ class Triple
         double length() const;
         double length_2() const;                // length squared
 
-        // NOTE: normalized return a COPY, normalize does NOT
+        // NOTE: normalized returns a COPY, normalize does NOT
         Triple normalized() const;              // normalized COPY
         void normalize();                       // normalize THIS
+
+        // NOTE: rotated returns a COPY, rotate does NOT
+        Triple rotated(Triple const &t, Triple const &rotation) const; // rotated COPY
+        void rotate(Triple const &rotation);                           // rotate THIS
 
 // --- Color functions ---------------------------------------------------------
 

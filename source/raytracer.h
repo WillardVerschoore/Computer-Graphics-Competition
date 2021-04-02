@@ -16,6 +16,7 @@ class Material;
 class Raytracer
 {
     Scene scene;
+    unsigned width, height;
 
     public:
 

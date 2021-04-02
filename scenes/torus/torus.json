@@ -1,9 +1,11 @@
 {
-    "Eye": [200, 400, 1000],
+    "Eye": [0, 2.5, 8],
+    "Rotation":[-20, 0, 0],
+    "FieldOfView": 60,
     "Shadows": true,
     "Lights": [
         {
-            "position": [-200, 600, 1500],
+            "position": [-10, 10, 10],
             "color": [0.8, 0.8, 0.8]
         }
     ],
@@ -14,16 +16,6 @@
             "width": 2,
             "maxSteps": 128,
             "distanceThreshold": 1E-3,
-            "Operations": [
-                {
-                    "type": "translate",
-                    "translation": [200, 250, 300]
-                },
-                {
-                    "type": "scale",
-                    "scale": 40
-                }
-            ],
             "material":
             {
                 "color": [0.0, 1.0, 0.0],

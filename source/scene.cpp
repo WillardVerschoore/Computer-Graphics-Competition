@@ -155,12 +155,20 @@ void Scene::render(Image &img)
 {
     unsigned w = img.width();
     unsigned h = img.height();
+    double aspectRatio = static_cast<double>(w) / static_cast<double>(h);
 
     for (unsigned y = 0; y < h; ++y)
         for (unsigned x = 0; x < w; ++x)
         {
-            Point pixel(x + 0.5, h - 1 - y + 0.5, 0);
-            Ray ray(eye, (pixel - eye).normalized());
+            // Convert the pixels to camera space positions.
+            double pixelX = (2.0 * (static_cast<double>(x) + 0.5) / static_cast<double>(w) - 1.0) * aspectRatio * tan(fieldOfView / 2.0);
+            double pixelY = (1.0 - 2.0 * (static_cast<double>(y) + 0.5) / static_cast<double>(h)) * tan(fieldOfView / 2.0);
+
+            // Create and rotate the pixel location.
+            Point pixel(pixelX, pixelY, -1.0); // The camera looks along the negative z-axis, hence the -1.0.
+            pixel.rotate(rotation);
+            
+            Ray ray(eye, pixel.normalized());
             Color col = trace(ray, recursionDepth);
             col.clamp();
             img(x, y) = col;
@@ -175,6 +183,8 @@ Scene::Scene()
     objects(),
     lights(),
     eye(),
+    rotation(),
+    fieldOfView(90.0),
     renderShadows(false),
     recursionDepth(0),
     supersamplingFactor(1)
@@ -193,6 +203,16 @@ void Scene::addLight(Light const &light)
 void Scene::setEye(Triple const &position)
 {
     eye = position;
+}
+
+void Scene::setRotation(Triple const &rotation)
+{
+    this->rotation = rotation;
+}
+
+void Scene::setFieldOfView(double fieldOfView)
+{
+    this->fieldOfView = fieldOfView;
 }
 
 unsigned Scene::getNumObject()

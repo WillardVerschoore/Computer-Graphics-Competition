@@ -176,8 +176,11 @@ void Raytracer::parseRayMarchedObjectNode(nlohmann::json const &node, RayMarched
 {
     obj->maxSteps = (node["maxSteps"]);
     obj->distanceThreshold = (node["distanceThreshold"]);
-    for (auto const &operationNode : node["Operations"])
-        obj->operations.push_back(parseOperationNode(operationNode));
+    if (node.count("Operations"))
+    {
+        for (auto const &operationNode : node["Operations"])
+            obj->operations.push_back(parseOperationNode(operationNode));
+    }
 }
 
 Operation *Raytracer::parseOperationNode(nlohmann::json const &node) const
@@ -215,8 +218,30 @@ try
 // -- Read your scene data in this section -------------------------------------
 // =============================================================================
 
+    if (jsonscene.count("Width"))
+        width = jsonscene["Width"];
+    else
+        width = 512;
+
+    if (jsonscene.count("Height"))
+        height = jsonscene["Height"];
+    else
+        height = 512;
+
     Point eye(jsonscene["Eye"]);
     scene.setEye(eye);
+
+    if (jsonscene.count("Rotation"))
+    {
+        Vector rotation(jsonscene["Rotation"]);
+        scene.setRotation(rotation);
+    }
+
+    if (jsonscene.count("FieldOfView"))
+    {
+        double fieldOfView = jsonscene["FieldOfView"];
+        scene.setFieldOfView(fieldOfView * M_PI / 180.0);
+    }
 
     if (jsonscene.count("MaxRecursionDepth"))
     {
@@ -266,8 +291,7 @@ catch (exception const &ex)
 
 void Raytracer::renderToFile(string const &ofname)
 {
-    // TODO: the size may be a settings in your file
-    Image img(400, 400);
+    Image img(width, height);
     cout << "Tracing...\n";
     scene.render(img);
     cout << "Writing image to " << ofname << "...\n";

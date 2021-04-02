@@ -155,6 +155,69 @@ Triple Triple::normalized() const
     return (*this) / length();
 }
 
+Triple Triple::rotated(Triple const &t, Triple const &rotation) const
+{
+    // Precompute trigonometric functions.
+    double cos_x = cos(rotation.x * M_PI / 180.0);
+    double sin_x = sin(rotation.x * M_PI / 180.0);
+    double cos_y = cos(rotation.y * M_PI / 180.0);
+    double sin_y = sin(rotation.y * M_PI / 180.0);
+    double cos_z = cos(rotation.z * M_PI / 180.0);
+    double sin_z = sin(rotation.z * M_PI / 180.0);
+
+    Triple result;
+    Triple copy(t);
+
+    // Rotate around the x axis. (Multiplication by rotation matrix).
+    result.x = copy.dot(Point{1.0,   0.0,    0.0});
+    result.y = copy.dot(Point{0.0, cos_x, -sin_x});
+    result.z = copy.dot(Point{0.0, sin_x,  cos_x});
+    copy = result;
+
+    // Rotate around the y axis. (Multiplication by rotation matrix).
+    result.x = copy.dot(Point{cos_y,  0.0, sin_y});
+    result.y = copy.dot(Point{0.0,    1.0,   0.0});
+    result.z = copy.dot(Point{-sin_y, 0.0, cos_y});
+    copy = result;
+
+    // Rotate around the z axis. (Multiplication by rotation matrix).
+    result.x = copy.dot(Point{cos_z, -sin_z,  0.0});
+    result.y = copy.dot(Point{sin_z,  cos_z,  0.0});
+    result.z = copy.dot(Point{0.0,      0.0,  1.0});
+
+    return result;
+}
+
+void Triple::rotate(Triple const &rotation)
+{
+    // Precompute trigonometric functions.
+    double cos_x = cos(rotation.x * M_PI / 180.0);
+    double sin_x = sin(rotation.x * M_PI / 180.0);
+    double cos_y = cos(rotation.y * M_PI / 180.0);
+    double sin_y = sin(rotation.y * M_PI / 180.0);
+    double cos_z = cos(rotation.z * M_PI / 180.0);
+    double sin_z = sin(rotation.z * M_PI / 180.0);
+
+    Triple copy(*this);
+
+    // Rotate around the x axis. (Multiplication by rotation matrix).
+    this->x = copy.dot(Point{1.0,   0.0,    0.0});
+    this->y = copy.dot(Point{0.0, cos_x, -sin_x});
+    this->z = copy.dot(Point{0.0, sin_x,  cos_x});
+    copy = *this;
+
+    // Rotate around the y axis. (Multiplication by rotation matrix).
+    this->x = copy.dot(Point{cos_y,  0.0, sin_y});
+    this->y = copy.dot(Point{0.0,    1.0,   0.0});
+    this->z = copy.dot(Point{-sin_y, 0.0, cos_y});
+    copy = *this;
+
+    // Rotate around the z axis. (Multiplication by rotation matrix).
+    this->x = copy.dot(Point{cos_z, -sin_z,  0.0});
+    this->y = copy.dot(Point{sin_z,  cos_z,  0.0});
+    this->z = copy.dot(Point{0.0,      0.0,  1.0});
+}
+
 void Triple::normalize()
 {
     double len = length();
