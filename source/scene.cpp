@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <limits>
 
 using namespace std;
@@ -161,18 +162,30 @@ void Scene::render(Image &img)
     {
         for (unsigned x = 0; x < w; ++x)
         {
-            // Convert the pixels to camera space positions.
-            double pixelX = (2.0 * (static_cast<double>(x) + 0.5) / static_cast<double>(w) - 1.0) * aspectRatio * tan(fieldOfView / 2.0);
-            double pixelY = (1.0 - 2.0 * (static_cast<double>(y) + 0.5) / static_cast<double>(h)) * tan(fieldOfView / 2.0);
+            Color color(0.0, 0.0, 0.0);
+            for (unsigned i = 0; i < supersamplingFactor; ++i)
+            {
+                for (unsigned j = 0; j < supersamplingFactor; ++j)
+                {
+                    // Super sampling.
+                    double xCoordinate = x + (1.0 + i) / (1.0 + supersamplingFactor);
+                    double yCoordinate = y + (1.0 + j) / (1.0 + supersamplingFactor);
 
-            // Create and rotate the pixel location.
-            Point pixel(pixelX, pixelY, -1.0); // The camera looks along the negative z-axis, hence the -1.0.
-            pixel.rotate(rotation);
-            
-            Ray ray(eye, pixel.normalized());
-            Color col = trace(ray, recursionDepth);
-            col.clamp();
-            img(x, y) = col;
+                    // Convert the pixels to camera space positions.
+                    double pixelX = (2.0 * xCoordinate / static_cast<double>(w) - 1.0) * aspectRatio * tan(fieldOfView / 2.0);
+                    double pixelY = (1.0 - 2.0 * yCoordinate / static_cast<double>(h)) * tan(fieldOfView / 2.0);
+
+                    // Create and rotate the pixel location.
+                    Point pixel(pixelX, pixelY, -1.0); // The camera looks along the negative z-axis, hence the -1.0.
+                    pixel.rotate(rotation);
+
+                    // Trace the ray.
+                    Ray ray(eye, pixel.normalized());
+                    color += trace(ray, recursionDepth).clamp();
+                }
+            }
+
+            img(x, y) = color / (supersamplingFactor * supersamplingFactor);
         }
     }
 }
@@ -184,17 +197,18 @@ Color Scene::sampleBackground(Ray const &ray) const
     {
         // Determine the central view ray.
         Vector central(0.0, 0.0, -1.0);
-        central.rotate(rotation);
 
-        // Project the rays onto the xz-plane and the yz-plane.
-        Vector centralX = Vector(central.x, 0.0, central.z).normalized();
-        Vector centralY = Vector(0.0, central.y, central.z).normalized();
-        Vector rayX = Vector(ray.D.x, 0.0, ray.D.z).normalized();
-        Vector rayY = Vector(0.0, ray.D.y, ray.D.z).normalized();
+        // Rotate the ray back to camera space and project onto the xz-plane and yz-plane.
+        // TODO: Create inverted rotation functions, or better yet, use quaternions.
+        Vector rotatedRay = ray.D.rotated(Point(0.0, 0.0, -rotation.z));
+        rotatedRay.rotate(Point(0.0, -rotation.y, 0.0));
+        rotatedRay.rotate(Point(-rotation.x, 0.0, 0.0));
+        Vector rayX = Vector(rotatedRay.x, 0.0, rotatedRay.z).normalized();
+        Vector rayY = Vector(0.0, rotatedRay.y, rotatedRay.z).normalized();
 
-        // Calculate the angles between the projected rays and use this for the gradient factor.
-        double factorX = 1.0 - acos(centralX.dot(rayX)) / (fieldOfView * aspectRatio);
-        double factorY = 1.0 - acos(centralY.dot(rayY)) / fieldOfView;
+        // Calculate the angles between the rays and use this for the gradient factor.
+        double factorX = 1.0 - acos(central.dot(rayX)) / (fieldOfView * aspectRatio);
+        double factorY = 1.0 - acos(central.dot(rayY)) / fieldOfView;
         double factor = (factorX + factorY) / 2.0; // Average the x and y factors.
 
         return backgroundColor * factor;

@@ -76,8 +76,8 @@ class Triple
         void normalize();                       // normalize THIS
 
         // NOTE: rotated returns a COPY, rotate does NOT
-        Triple rotated(Triple const &t, Triple const &rotation) const; // rotated COPY
-        void rotate(Triple const &rotation);                           // rotate THIS
+        Triple rotated(Triple const &rotation) const; // rotated COPY
+        void rotate(Triple const &rotation);          // rotate THIS
 
 // --- Color functions ---------------------------------------------------------
 

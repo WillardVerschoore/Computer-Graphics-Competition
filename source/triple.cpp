@@ -155,7 +155,7 @@ Triple Triple::normalized() const
     return (*this) / length();
 }
 
-Triple Triple::rotated(Triple const &t, Triple const &rotation) const
+Triple Triple::rotated(Triple const &rotation) const
 {
     // Precompute trigonometric functions.
     double cos_x = cos(rotation.x * M_PI / 180.0);
@@ -166,7 +166,7 @@ Triple Triple::rotated(Triple const &t, Triple const &rotation) const
     double sin_z = sin(rotation.z * M_PI / 180.0);
 
     Triple result;
-    Triple copy(t);
+    Triple copy(*this);
 
     // Rotate around the x axis. (Multiplication by rotation matrix).
     result.x = copy.dot(Point{1.0,   0.0,    0.0});

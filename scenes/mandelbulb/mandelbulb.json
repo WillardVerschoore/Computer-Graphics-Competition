@@ -16,6 +16,12 @@
             "iterations": 4,
             "maxSteps": 128,
             "distanceThreshold": 0.0015,
+            "Operations": [
+                {
+                    "type": "rotate",
+                    "rotation": [90, 0, 0]
+                }
+            ],
             "material":
             {
                 "color": [1.0, 1.0, 1.0],
