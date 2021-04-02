@@ -273,6 +273,18 @@ try
         scene.setBackgroundColor(backgroundColor);
     }
 
+    if (jsonscene.count("DepthOfFieldStrength"))
+    {
+        double strength = jsonscene["DepthOfFieldStrength"];
+        scene.setDepthOfFieldStrength(strength);
+    }
+
+    if (jsonscene.count("FocalLength"))
+    {
+        double length = jsonscene["FocalLength"];
+        scene.setFocalLength(length);
+    }
+
     for (auto const &lightNode : jsonscene["Lights"])
         scene.addLight(parseLightNode(lightNode));
 

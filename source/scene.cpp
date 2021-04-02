@@ -7,8 +7,8 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 #include <limits>
+#include <random>
 
 using namespace std;
 
@@ -38,7 +38,7 @@ Color Scene::trace(Ray const &ray, unsigned depth)
 
     // No hit? Return background color.
     if (!obj)
-        return sampleBackground(ray);
+        return sampleBackground(ray, depth);
 
     Material const &material = obj->material;
     Point hit = ray.at(min_hit.t);
@@ -158,6 +158,10 @@ void Scene::render(Image &img)
     unsigned h = img.height();
     aspectRatio = static_cast<double>(w) / static_cast<double>(h);
 
+    std::random_device randomDevice;
+    std::default_random_engine randomEngine(randomDevice());
+    std::uniform_real_distribution<double> uniformDistribution(-1.0, 1.0);
+
     for (unsigned y = 0; y < h; ++y)
     {
         for (unsigned x = 0; x < w; ++x)
@@ -179,8 +183,21 @@ void Scene::render(Image &img)
                     Point pixel(pixelX, pixelY, -1.0); // The camera looks along the negative z-axis, hence the -1.0.
                     pixel.rotate(rotation);
 
-                    // Trace the ray.
+                    // Determine the focal point.
                     Ray ray(eye, pixel.normalized());
+                    Point focalPoint = ray.O + focalLength * ray.D;
+
+                    // Shift the ray origin to simulate depth of field.
+                    Point origin(ray.O);
+                    origin.x += uniformDistribution(randomEngine) * depthOfFieldStrength;
+                    origin.y += uniformDistribution(randomEngine) * depthOfFieldStrength;
+                    ray.O = origin;
+
+                    // Recalculate the ray direction.
+                    Vector direction = (focalPoint - ray.O).normalized();
+                    ray.D = direction;
+
+                    // Trace the ray.
                     color += trace(ray, recursionDepth).clamp();
                 }
             }
@@ -190,10 +207,10 @@ void Scene::render(Image &img)
     }
 }
 
-Color Scene::sampleBackground(Ray const &ray) const
+Color Scene::sampleBackground(Ray const &ray, unsigned depth) const
 {
     // If this ray came directly from the camera, we return a gradient background color.
-    if (ray.O == eye)
+    if (depth == recursionDepth)
     {
         // Determine the central view ray.
         Vector central(0.0, 0.0, -1.0);
@@ -231,7 +248,9 @@ Scene::Scene()
     renderShadows(false),
     recursionDepth(0),
     supersamplingFactor(1),
-    backgroundColor()
+    backgroundColor(),
+    depthOfFieldStrength(0.0),
+    focalLength(1.0)
 {}
 
 void Scene::addObject(ObjectPtr obj)
@@ -287,4 +306,14 @@ void Scene::setSuperSample(unsigned factor)
 void Scene::setBackgroundColor(Triple const &color)
 {
     backgroundColor = color;
+}
+
+void Scene::setDepthOfFieldStrength(double strength)
+{
+    depthOfFieldStrength = strength;
+}
+
+void Scene::setFocalLength(double length)
+{
+    focalLength = length;
 }

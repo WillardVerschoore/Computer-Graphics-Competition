@@ -1,7 +1,9 @@
 {
     "Width": 2048,
     "Height": 2048,
-    "SuperSamplingFactor": 2,
+    "DepthOfFieldStrength": 0.0025,
+    "FocalLength": 0.25,
+    "SuperSamplingFactor": 3,
     "Eye": [0.1, 0.75, 0.75],
     "FieldOfView": 60,
     "Rotation": [25, 30, 0],

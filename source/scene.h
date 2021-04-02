@@ -24,6 +24,8 @@ class Scene
     unsigned recursionDepth;
     unsigned supersamplingFactor;
     Color backgroundColor;
+    double depthOfFieldStrength;
+    double focalLength;
 
     // Offset multiplier. Before casting a new ray from a hit point,
     // move the hit point in the direction of the normal with this offset
@@ -52,12 +54,14 @@ class Scene
         void setRecursionDepth(unsigned depth);
         void setSuperSample(unsigned factor);
         void setBackgroundColor(Triple const &color);
+        void setDepthOfFieldStrength(double strength);
+        void setFocalLength(double length);
 
         unsigned getNumObject();
         unsigned getNumLights();
 
     private:
-        Color sampleBackground(Ray const &ray) const;
+        Color sampleBackground(Ray const &ray, unsigned depth) const;
 };
 
 #endif
