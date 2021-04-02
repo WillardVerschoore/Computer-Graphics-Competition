@@ -19,9 +19,11 @@ class Scene
     Point eye;
     Vector rotation;
     double fieldOfView;
+    double aspectRatio;
     bool renderShadows;
     unsigned recursionDepth;
     unsigned supersamplingFactor;
+    Color backgroundColor;
 
     // Offset multiplier. Before casting a new ray from a hit point,
     // move the hit point in the direction of the normal with this offset
@@ -49,9 +51,13 @@ class Scene
         void setRenderShadows(bool renderShadows);
         void setRecursionDepth(unsigned depth);
         void setSuperSample(unsigned factor);
+        void setBackgroundColor(Triple const &color);
 
         unsigned getNumObject();
         unsigned getNumLights();
+
+    private:
+        Color sampleBackground(Ray const &ray) const;
 };
 
 #endif

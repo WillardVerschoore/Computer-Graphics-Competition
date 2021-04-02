@@ -37,7 +37,7 @@ Color Scene::trace(Ray const &ray, unsigned depth)
 
     // No hit? Return background color.
     if (!obj)
-        return Color(0.0, 0.0, 0.0);
+        return sampleBackground(ray);
 
     Material const &material = obj->material;
     Point hit = ray.at(min_hit.t);
@@ -155,9 +155,10 @@ void Scene::render(Image &img)
 {
     unsigned w = img.width();
     unsigned h = img.height();
-    double aspectRatio = static_cast<double>(w) / static_cast<double>(h);
+    aspectRatio = static_cast<double>(w) / static_cast<double>(h);
 
     for (unsigned y = 0; y < h; ++y)
+    {
         for (unsigned x = 0; x < w; ++x)
         {
             // Convert the pixels to camera space positions.
@@ -173,6 +174,34 @@ void Scene::render(Image &img)
             col.clamp();
             img(x, y) = col;
         }
+    }
+}
+
+Color Scene::sampleBackground(Ray const &ray) const
+{
+    // If this ray came directly from the camera, we return a gradient background color.
+    if (ray.O == eye)
+    {
+        // Determine the central view ray.
+        Vector central(0.0, 0.0, -1.0);
+        central.rotate(rotation);
+
+        // Project the rays onto the xz-plane and the yz-plane.
+        Vector centralX = Vector(central.x, 0.0, central.z).normalized();
+        Vector centralY = Vector(0.0, central.y, central.z).normalized();
+        Vector rayX = Vector(ray.D.x, 0.0, ray.D.z).normalized();
+        Vector rayY = Vector(0.0, ray.D.y, ray.D.z).normalized();
+
+        // Calculate the angles between the projected rays and use this for the gradient factor.
+        double factorX = 1.0 - acos(centralX.dot(rayX)) / (fieldOfView * aspectRatio);
+        double factorY = 1.0 - acos(centralY.dot(rayY)) / fieldOfView;
+        double factor = (factorX + factorY) / 2.0; // Average the x and y factors.
+
+        return backgroundColor * factor;
+    }
+    // Otherwise, we just return the background color.
+    else
+        return backgroundColor;
 }
 
 // --- Misc functions ----------------------------------------------------------
@@ -187,7 +216,8 @@ Scene::Scene()
     fieldOfView(90.0),
     renderShadows(false),
     recursionDepth(0),
-    supersamplingFactor(1)
+    supersamplingFactor(1),
+    backgroundColor()
 {}
 
 void Scene::addObject(ObjectPtr obj)
@@ -238,4 +268,9 @@ void Scene::setRecursionDepth(unsigned depth)
 void Scene::setSuperSample(unsigned factor)
 {
     supersamplingFactor = factor;
+}
+
+void Scene::setBackgroundColor(Triple const &color)
+{
+    backgroundColor = color;
 }

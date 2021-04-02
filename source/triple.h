@@ -96,6 +96,8 @@ Triple operator+(double f, Triple const &t);
 Triple operator-(double f, Triple const &t);
 Triple operator*(double f, Triple const &t);
 
+bool operator==(Triple const &lhs, Triple const &rhs);
+
 // reflect incident in normal
 Triple reflect(Triple const &incident, Triple const &normal);
 

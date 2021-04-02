@@ -277,6 +277,11 @@ Triple operator*(double f, Triple const &t)
     return Triple(f * t.x, f * t.y, f * t.z);
 }
 
+bool operator==(Triple const &lhs, Triple const &rhs)
+{
+    return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
+}
+
 Triple reflect(Triple const &incident, Triple const &normal)
 {
     return incident - 2.0 * normal.dot(incident) * normal;

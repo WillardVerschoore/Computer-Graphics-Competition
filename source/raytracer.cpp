@@ -267,6 +267,12 @@ try
         scene.setRenderShadows(shadows);
     }
 
+    if (jsonscene.count("BackgroundColor"))
+    {
+        Color backgroundColor(jsonscene["BackgroundColor"]);
+        scene.setBackgroundColor(backgroundColor);
+    }
+
     for (auto const &lightNode : jsonscene["Lights"])
         scene.addLight(parseLightNode(lightNode));
 
