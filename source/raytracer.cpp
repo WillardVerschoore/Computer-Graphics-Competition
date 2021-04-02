@@ -13,6 +13,7 @@
 #include "shapes/sphere.h"
 #include "shapes/ray_marched_sphere.h"
 #include "shapes/sierpinski_tetrahedron.h"
+#include "shapes/mandelbulb.h"
 #include "shapes/menger_sponge.h"
 #include "shapes/torus.h"
 #include "shapes/octahedron.h"
@@ -84,6 +85,13 @@ bool Raytracer::parseObjectNode(json const &node)
     {
         size_t iterations = node["iterations"];
         obj = ObjectPtr(new SierpinskiTetrahedron(iterations));
+        RayMarchedObject *rayMarchedObj = dynamic_cast<RayMarchedObject*>(obj.get());
+        parseRayMarchedObjectNode(node, rayMarchedObj);
+    }
+    else if (node["type"] == "mandelbulb")
+    {
+        size_t iterations = node["iterations"];
+        obj = ObjectPtr(new Mandelbulb(iterations));
         RayMarchedObject *rayMarchedObj = dynamic_cast<RayMarchedObject*>(obj.get());
         parseRayMarchedObjectNode(node, rayMarchedObj);
     }

@@ -1,0 +1,36 @@
+{
+    "Eye": [200, 400, 1000],
+    "Shadows": false,
+    "Lights": [
+        {
+            "position": [-200, 600, 1500],
+            "color": [0.8, 0.8, 0.8]
+        }
+    ],
+    "Objects": [
+        {
+            "type": "mandelbulb",
+            "iterations": 16,
+            "maxSteps": 256,
+            "distanceThreshold": 1E-3,
+            "Operations": [
+                {
+                    "type": "translate",
+                    "translation": [200, 275, 300]
+                },
+                {
+                    "type": "scale",
+                    "scale": 100
+                }
+            ],
+            "material":
+            {
+                "color": [1.0, 0.4, 0.2],
+                "ka": 0.2,
+                "kd": 0.8,
+                "ks": 0.5,
+                "n": 64
+            }
+        }
+    ]
+}

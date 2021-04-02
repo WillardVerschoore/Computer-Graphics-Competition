@@ -1,23 +1,21 @@
 #include "ray_marched_object.h"
 
-#include <iostream>
-
 using namespace std;
 
 Hit RayMarchedObject::intersect(Ray const &ray)
 {
-    //cout << operations.size() << endl;
-
     double totalDistance = 0.0;
     for (size_t steps = 0; steps < maxSteps; ++steps)
     {
+        // March the ray forward.
         Point hit = ray.at(totalDistance);
         double distance = calculateDistance(hit);
 
         // If we are close enough, we count a hit.
         if (distance < distanceThreshold)
         {
-            Vector normal = calculateNormal(hit);
+            // Take a step back when calculating the normal.
+            Vector normal = calculateNormal(hit - distanceThreshold * ray.D);
             return Hit(totalDistance, normal);
         }
 
@@ -43,7 +41,7 @@ double RayMarchedObject::calculateDistance(Point const &position)
 
 Vector RayMarchedObject::calculateNormal(Point const &hit)
 {
-    // Small offsets along the coordinate axes. TODO: Use distanceThreshold or new variable for offset size.
+    // Small offsets along the coordinate axes.
     Point xOffset(distanceThreshold, 0.0, 0.0);
     Point yOffset(0.0, distanceThreshold, 0.0);
     Point zOffset(0.0, 0.0, distanceThreshold);

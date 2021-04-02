@@ -48,7 +48,7 @@ Color Scene::trace(Ray const &ray, unsigned depth)
 
     // The shading normal always points in the direction of the view,
     // as required by the Phong illumination model.
-    Vector shadingN;
+    Vector shadingN = N;
     if (N.dot(V) >= 0.0)
         shadingN = N;
     else
