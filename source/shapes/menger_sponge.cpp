@@ -10,8 +10,11 @@ MengerSponge::MengerSponge(size_t iterations)
     iterations(iterations)
 {}
 
+// Fast Menger Sponge distance estimator adapted from:
+// https://www.iquilezles.org/www/articles/menger/menger.htm
 double MengerSponge::distanceEstimator(Point const &position)
 {
+    // GLSL style floating point modulo function.
     auto mod = [](double x, double y)
     {
         return x - y * floor(x / y);
@@ -32,14 +35,18 @@ double MengerSponge::distanceEstimator(Point const &position)
         scale *= 3.0;
         
         Point r =  a;
-        r.x = 1.0 - 3.0 * abs(r.x);
-        r.y = 1.0 - 3.0 * abs(r.y);
-        r.z = 1.0 - 3.0 * abs(r.z);
+        r.x = abs(1.0 - 3.0 * abs(r.x));
+        r.y = abs(1.0 - 3.0 * abs(r.y));
+        r.z = abs(1.0 - 3.0 * abs(r.z));
 
-        double c = cross(r) / scale;
+        double da = max(r.x, r.y);
+        double db = max(r.y, r.z);
+        double dc = max(r.z, r.x);
+        double c = (min(da, min(db, dc)) - 1.0) / scale;
+
         d = max(d, c);
     }
-    
+        
     return d;
 }
 
@@ -56,24 +63,4 @@ double MengerSponge::box(Point const &position, Point const &b)
     adjusted.y = max(adjusted.y, 0.0);
     adjusted.z = max(adjusted.z, 0.0);
     return adjusted.length() + m;
-}
-
-double MengerSponge::cross(Point const &position)
-{
-    double inf = numeric_limits<double>::infinity();
-
-    Point adjusted = position;
-    double da = box(adjusted, Point{inf, 1.0, 1.0});
-
-    adjusted.x = position.y;
-    adjusted.y = position.z;
-    adjusted.z = position.x;
-    double db = box(adjusted, Point{1.0, inf, 1.0});
-
-    adjusted.x = position.z;
-    adjusted.y = position.x;
-    adjusted.z = position.y;
-    double dc = box(adjusted, Point{1.0, 1.0, inf});
-
-    return min(da, min(db, dc));
 }
