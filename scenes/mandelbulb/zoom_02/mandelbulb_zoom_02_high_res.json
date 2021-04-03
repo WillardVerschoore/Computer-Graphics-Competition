@@ -1,0 +1,41 @@
+{
+    "Width": 2048,
+    "Height": 2048,
+    "Eye": [0, 0, 1.5],
+    "FieldOfView": 45,
+    "DepthOfFieldStrength": 0.004,
+    "SuperSamplingFactor": 3,
+    "FocalLength": 0.4,
+    "MaxRecursionDepth": 2,
+    "BackgroundColor": [0.55, 0.825, 1.0],
+    "Shadows": true,
+    "Lights": [
+        {
+            "position": [-1, 1, 2],
+            "color": [0.9, 0.8, 0.725]
+        }
+    ],
+    "Objects": [
+        {
+            "type": "mandelbulb",
+            "iterations": 8,
+            "maxSteps": 128,
+            "distanceThreshold": 0.0001,
+            "maxDistance": 10,
+            "Operations": [
+                {
+                    "type": "rotate",
+                    "rotation": [90, 180, 0]
+                }
+            ],
+            "material":
+            {
+                "color": [1.0, 1.0, 1.0],
+                "ka": 0.135,
+                "kd": 0.8,
+                "ks": 0.15,
+                "n": 64
+            }
+        }
+    ]
+}

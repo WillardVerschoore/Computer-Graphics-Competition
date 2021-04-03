@@ -1,0 +1,34 @@
+{
+    "DepthOfFieldStrength": 0.0,
+    "FocalLength": 0.25,
+    "SuperSamplingFactor": 1,
+    "Eye": [0.1, 0.75, 0.75],
+    "FieldOfView": 60,
+    "Rotation": [25, 30, 0],
+    "MaxRecursionDepth": 2,
+    "BackgroundColor": [0.55, 0.825, 1.0],
+    "Shadows": true,
+    "Lights": [
+        {
+            "position": [-7.5, 10, 10],
+            "color": [0.8, 0.8, 0.8]
+        }
+    ],
+    "Objects": [
+        {
+            "type": "mandelbulb",
+            "iterations": 8,
+            "maxSteps": 128,
+            "distanceThreshold": 0.0001,
+            "maxDistance": 100.0,
+            "material":
+            {
+                "color": [0.9, 0.25, 0.25],
+                "ka": 0.25,
+                "kd": 1.0,
+                "ks": 0.2,
+                "n": 64
+            }
+        }
+    ]
+}
