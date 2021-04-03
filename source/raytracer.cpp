@@ -26,6 +26,7 @@
 // -- Include all your operations here ---------------------------------------------
 // =============================================================================
 
+#include "operations/repeat.h"
 #include "operations/rotate.h"
 #include "operations/scale.h"
 #include "operations/translate.h"
@@ -192,12 +193,17 @@ void Raytracer::parseRayMarchedObjectNode(nlohmann::json const &node, RayMarched
 
 Operation *Raytracer::parseOperationNode(nlohmann::json const &node) const
 {
-     if (node["type"] == "rotate")
+    if (node["type"] == "repeat")
+    {
+        Vector period(node["period"]);
+        return new Repeat(period);
+    }
+    else if (node["type"] == "rotate")
     {
         Vector rotation(node["rotation"]);
         return new Rotate(rotation);
     }
-    if (node["type"] == "scale")
+    else if (node["type"] == "scale")
     {
         double scale = node["scale"];
         return new Scale(scale);
