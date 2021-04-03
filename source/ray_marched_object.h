@@ -11,6 +11,7 @@ class RayMarchedObject : public Object
 public:
     size_t maxSteps = 128;
     double distanceThreshold = 1E-3;
+    double maxDistance = 1E3;
     std::vector<Operation*> operations;
 
     Hit intersect(Ray const &ray) override;

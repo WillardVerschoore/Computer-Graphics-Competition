@@ -174,8 +174,15 @@ Material Raytracer::parseMaterialNode(json const &node) const
 
 void Raytracer::parseRayMarchedObjectNode(nlohmann::json const &node, RayMarchedObject *obj) const
 {
-    obj->maxSteps = (node["maxSteps"]);
-    obj->distanceThreshold = (node["distanceThreshold"]);
+    if (node.count("maxSteps"))
+        obj->maxSteps = (node["maxSteps"]);
+
+    if (node.count("distanceThreshold"))
+        obj->distanceThreshold = (node["distanceThreshold"]);
+
+    if (node.count("maxDistance"))
+        obj->maxDistance = (node["maxDistance"]);
+
     if (node.count("Operations"))
     {
         for (auto const &operationNode : node["Operations"])

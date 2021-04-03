@@ -20,6 +20,10 @@ Hit RayMarchedObject::intersect(Ray const &ray)
         }
 
         totalDistance += distance;
+
+        // If we are too far away, we break and return no hit.
+        if (totalDistance > maxDistance)
+            break;
     }
 
     return Hit::NO_HIT();

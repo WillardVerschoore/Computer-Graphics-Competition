@@ -1,7 +1,7 @@
 {
     "Width": 2048,
     "Height": 2048,
-    "DepthOfFieldStrength": 0.0025,
+    "DepthOfFieldStrength": 0.002,
     "FocalLength": 0.25,
     "SuperSamplingFactor": 3,
     "Eye": [0.1, 0.75, 0.75],
@@ -9,10 +9,10 @@
     "Rotation": [25, 30, 0],
     "MaxRecursionDepth": 4,
     "BackgroundColor": [0.55, 0.825, 1.0],
-    "Shadows": false,
+    "Shadows": true,
     "Lights": [
         {
-            "position": [-10, 10, 10],
+            "position": [-7.5, 10, 10],
             "color": [0.8, 0.8, 0.8]
         }
     ],
@@ -22,6 +22,7 @@
             "iterations": 8,
             "maxSteps": 128,
             "distanceThreshold": 0.0001,
+            "maxDistance": 100.0,
             "material":
             {
                 "color": [0.9, 0.25, 0.25],
