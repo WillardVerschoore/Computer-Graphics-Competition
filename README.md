@@ -55,7 +55,9 @@ The scene files of interest are those in the `menger_sponge` and `mandelbulb` fo
 
 Below we show some of the nicest images we have managed to produce. Note that these are the low resolution versions as the high resolution versions resulted in formatting errors. Please look at the high resolution images in the `scenes` folder.
 
-![The Menger Sponge](scenes/menger_sponge/menger_sponge_full_low_res.png)
+![The Menger Sponge](scenes/menger_sponge/full/menger_sponge_full_low_res.png)
+
+![Interior of the Menger Sponge](scenes/menger_sponge/interior/menger_sponge_interior_low_res.png)
 
 ![The Mandelbulb](scenes/mandelbulb/full_01/mandelbulb_full_01_low_res.png)
 

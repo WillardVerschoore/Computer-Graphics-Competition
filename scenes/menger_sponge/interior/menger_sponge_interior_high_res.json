@@ -1,0 +1,38 @@
+{
+    "Width": 2048,
+    "Height": 2048,
+    "Eye": [-0.1, -0.3, -0.6],
+    "Rotation": [0, 185.0, 0],
+    "FieldOfView": 60,
+    "SuperSamplingFactor": 3,
+    "MaxRecursionDepth": 4,
+    "BackgroundColor": [0.55, 0.825, 1.0],
+    "Shadows": true,
+    "Lights": [
+        {
+            "position": [-1, 1, 5],
+            "color": [1.0, 1.0, 1.0]
+        },
+        {
+            "position": [0, 0, 0],
+            "color": [0.2, 0.2, 0.2]
+        }
+    ],
+    "Objects": [
+        {
+            "type": "menger_sponge",
+            "iterations": 7,
+            "maxSteps": 128,
+            "distanceThreshold": 0.0001,
+            "maxDistance": 10,
+            "material":
+            {
+                "color": [1.0, 1.0, 1.0],
+                "ka": 0.25,
+                "kd": 1.0,
+                "ks": 0.1,
+                "n": 64
+            }
+        }
+    ]
+}
