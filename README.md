@@ -66,3 +66,5 @@ Below we show some of the nicest images we have managed to produce. Note that th
 ![A zoomed in part of a red Mandelbulb](scenes/mandelbulb/zoom_01/mandelbulb_zoom_01_low_res.png)
 
 ![A zoomed in part of the Mandelbulb](scenes/mandelbulb/zoom_02/mandelbulb_zoom_02_low_res.png)
+
+![Another zoomed in part of the Mandelbulb](scenes/mandelbulb/zoom_03/mandelbulb_zoom_03_low_res.png)
